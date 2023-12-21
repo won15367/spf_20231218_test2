@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -39,7 +40,6 @@ public class MemberController {
 		model.addAttribute("memberpw", mpw);
 		
 		return "loginOK";
-		
 	}
 	
 	@RequestMapping(value="/join")
@@ -47,7 +47,7 @@ public class MemberController {
 		return "join";
 	}
 	
-	@RequestMapping(value="/joinOK")
+	@RequestMapping(value="/joinOK", method=RequestMethod.POST)
 	public String joinOK(JoinMember joinMember) {
 		return "joinOK";
 	}
@@ -56,6 +56,38 @@ public class MemberController {
 	public String memberNum(@PathVariable String memberNumber, Model model) {
 		model.addAttribute("memberNumber", memberNumber);
 		return "memberNumOK";
+	}
+	
+	@RequestMapping(value="memberCheck")
+	public String memberCheck() {
+
+		return "memberCheck";
+	}
+	
+	@RequestMapping(value="memberCheckOK")
+	public String memberCheckOK(HttpServletRequest request) {
+		
+		String cid = request.getParameter("memberid");
+		
+		if (cid.equals("tiger")) {
+			return "redirect:memberCheckGood";
+		} else {
+			return "redirect:memberCheckNG";
+		}
+		// redirect를 사용하면 페이지파일이 아니라 요청을 반환한다
+				
+	}
+	
+	@RequestMapping(value="memberCheckGood")
+	public String memberCheckGood() {
+
+		return "memberCheckOK";
+	}
+	
+	@RequestMapping(value="memberCheckNG")
+	public String memberCheckNG() {
+
+		return "memberCheckNG";
 	}
 	
 }
